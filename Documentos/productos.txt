@@ -18,5 +18,5 @@
         "title": "Budin marmolado"
         "price": 342
         "id": 4
-    },
+    }
 ]
