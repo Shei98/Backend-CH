@@ -37,7 +37,7 @@
 const fs = require('fs')
 
 
-class Container {
+class contenedor {
   constructor(path) {
     this.path = path;
   }
@@ -109,5 +109,5 @@ class Container {
 
 }
 
-module.exports = Container;
+module.exports = contenedor;
 
