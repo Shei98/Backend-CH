@@ -2,19 +2,19 @@ const express = require("express");
 const classContainer = require("./contenedor.js");
 
 const app = express();
-const PORT = 8090;
+const PORT = 8080;
 
-const archivo = new classContainer("productos.txt");
+const archivo = new classContainer("./productos.json");
 
-app.get("/productos", async (require, response) => {
+app.get("/productos", async (req, res) => {
   const productos = await archivo.read();
-  response.send({ Productos: productos });
+  res.send({ Productos: productos });
 });
 
-app.get("/random", async (require, response) => {
-    const productos = await archivo.read();
-    const random = parseInt(Math.random() * productos.lenght)
-  response.send({ Productos: productos[random] });
+app.get("/random", async (req, res) => {
+  const productos = await archivo.read();
+  const random = parseInt(Math.random() * productos.length);
+  res.send({ Productos: productos[random] });
 });
 
 const server = app.listen(PORT, () => {

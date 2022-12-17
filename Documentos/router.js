@@ -1,5 +1,5 @@
 const express = require("express");
-const Archivo = require("./contenedor");
+const Archivo = require("./main");
 
 const router = express.Router();
 const contenedor = new Archivo();
