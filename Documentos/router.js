@@ -2,10 +2,10 @@ const express = require("express");
 const Archivo = require("./main");
 
 const router = express.Router();
-const contenedor = new Archivo();
+const contenedor = new Archivo('productos.json');
 
-router.get("/", (_req, res) => {
-    const productos = contenedor.getAll();
+router.get("/", async (_req, res) => {
+    const productos = await contenedor.getAll();
     res.send(productos);
 })
 
@@ -15,10 +15,15 @@ router.get("/:id", (req, res) => {
     res.send(producto);
 })
 
-router.post("/", (req, res) => {
-    const obj = req.body;
-    const newObj = contenedor.create(obj);
-    res.send(newObj)
+router.post("/", async (req, res) => {
+    try {
+        const obj = req.body;
+        const newObj = await contenedor.save(obj);
+        res.status(201).json(newObj);
+    }catch(err){
+        console.log(err);
+        res.status(500).json({'message':'Ha ocurrido un error'})
+    }
 });
 
 router.put("/:id", (req, res) => {
