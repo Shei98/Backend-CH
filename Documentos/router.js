@@ -4,8 +4,8 @@ const Archivo = require("./main");
 const router = express.Router();
 const contenedor = new Archivo();
 
-router.get("/", (_req, res) => {
-    const productos = contenedor.getAll();
+router.get("/", async (_req, res) => {
+    const productos = await contenedor.getAll();
     res.send(productos);
 })
 
