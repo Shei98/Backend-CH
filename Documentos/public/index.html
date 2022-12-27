@@ -1,4 +1,11 @@
-
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Desafio Nro 4</title>
+  </head>
   <body>
     <form action="/api/productos" method="post">
       <div>
@@ -17,15 +24,5 @@
         <input type="submit" value="Guardar" />
       </div>
     </form>
-    <h2>Variable</h2>
-    <p><%= tagline%></p>
-    <ul>
-      <% mascots.forEach(function(mascot){%>
-<li>
-  <strong><%= mascot.name %></strong>
-  representing <% mascot.organization %>
-</li>
-      <% }); %>
-    </ul>
   </body>
 </html>

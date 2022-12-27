@@ -1,8 +1,13 @@
 const express = require("express");
-const Archivo = require("../src/public/conteiner");
+const { Server: HttpServer } = require("http");
+const { Server: IOServer } = require("socket.io");
+const Archivo = require("../public/conteiner");
 
 const PORT = 8080;
 const app = express();
+
+const httpServer = new HttpServer(app);
+const io = new IOServer(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,15 +37,27 @@ app.get("/", function (req, res) {
   ];
   var tagline = "All you need in your life is an animal mascot.";
 
-  res.render('pages/index',{
+  res.render("pages/index", {
     mascots: mascots,
-    tagline: tagline
+    tagline: tagline,
   });
 });
 
-app.get('/about', function (req, res){
-    res.render('pages/about');
-} ); 
+app.get("/about", function (req, res) {
+  res.render("pages/about");
+});
 
 app.listen(8080);
-console.log('8080 is the way');
+console.log("8080 is the way");
+
+app.use(express.static("./public"));
+app.get("/", (req, res) => {
+  res.sendFile("index.html", { root: __dirname });
+});
+
+httpServer.listen(3000, () => console.log("SERVER PIOLA"));
+
+io.on('connection', (socket) =>{
+  console.log('Usuario conectado');
+  socket.emit('mi mensaje', 'Este es mi mensaje desde le servidor')
+})

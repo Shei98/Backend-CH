@@ -4,6 +4,11 @@ const classContainer = require("./contenedor.js");
 const app = express();
 const PORT = 8080;
 
+const socket = io(); 
+socket.on('mi mensaje', data =>{
+  alert(data)
+})
+
 const archivo = new classContainer("./productos.json");
 
 app.get("/productos", async (req, res) => {
