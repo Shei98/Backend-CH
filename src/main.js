@@ -1,91 +1,28 @@
-const fs = require("fs");
+const express = require('express')
 
-class Container {
-  constructor(path) {
-    this.path = path;
-  }
+const ProductosApi = require('../api/productos.js')
 
-  writeFile = async (data) => {
-    try {
-      await fs.promises.writeFile(this.path, JSON.stringify(data, null, 2));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+const productosApi = new ProductosApi()
 
-  updateById = async (newObject, id) => {
-    try {
-      const products = await fs.promises.readFile(this.path, "utf-8");
-      const data = JSON.parse(products);
-      const obj = data.find((obj) => obj.id === id);
-      if (obj === undefined) {
-        return undefined;
-      } else {
-        newObject = { ...newObject, id: id };
-        data.splice(data.indexOf(obj), 1);
-        data.push(newObject);
-        data.sort((a, b) => a.id - b.id);
-        await this.writeFile(data);
-        return newObject;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+const app = express()
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
 
-  create = async (obj) => {
-    try {
-      const products = await fs.promises.readFile(this.path, "utf-8");
-      const data = JSON.parse(products);
-      let newId;
-      console.log(data.length);
-      data.length === 0 ? (newId = 1) : (newId = data[data.length - 1].id + 1);
-      const newObj = { ...obj, id: newId };
-      data.push(newObj);
-      await this.writeFile(data);
-      console.log(newObj, "----");
-      return newObj;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+//Set engine
 
-  getById = async (id) => {
-    try {
-      const readProducts = await fs.promises.readFile(this.path, "utf-8");
-      const data = JSON.parse(readProducts);
-      const obj = data.find((obj) => obj.id === id);
-      return obj;
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  getAll = async () => {
-    try {
-      const readProducts = await fs.promises.readFile(this.path, "utf-8");
-      return JSON.parse(readProducts);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+//--------------------------------------------
 
-  deleteById = async (id, res) => {
-    try {
-      const readProducts = await fs.promises.readFile(this.path, "utf-8");
-      const data = JSON.parse(readProducts);
-      const obj = data.find((obj) => obj.id === id);
-      if (obj === undefined) {
-        return undefined;
-      } else {
-        data.splice(data.indexOf(obj), 1);
-        await this.writeFile(data);
-        return true;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-}
+app.post('/productos', (req, res) => {
+})
 
-module.exports = Container;
+app.get('/productos', (req, res) => {
+});
+
+//--------------------------------------------
+const PORT = 8080
+const server = app.listen(PORT, () => {
+    console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
+})
+server.on("error", error => console.log(`Error en servidor ${error}`))
