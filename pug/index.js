@@ -5,8 +5,6 @@ const PORT = 8080
 app.use('/static', express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: false}));
 app.use(express.json());
-// --> NO CONFIGURAMOS EL ENGINE!!
-
 
 app.set('views', './views')
 app.set('view engine', 'pug')
@@ -26,4 +24,4 @@ app.post('urljson', (req, res) =>  {
 
 app.listen(PORT, () => {
     console.log(`Server run on port ${PORT}`);
-})
+});
