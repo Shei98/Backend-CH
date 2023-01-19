@@ -1,23 +1,24 @@
 const express = require("express");
-const { Server : HttpServer } = require('http');
-const { Server : IOServer } = require('socket.io');
-const router = require("./router");
+const { Server: HttpServer } = require("http");
+const { Server: IOServer } = require("socket.io");
 
-const PORT = 8080;
 const app = express();
-
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
+app.use(express.static("./public"));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
-app.use(express.static('public'));
-app.use("/api/productos", router);
-
-const server = app.listen(PORT, () => { 
-    console.log(`listening app port ${server.address().port}`);
+app.get("/", (req, res) => {
+  res.sendFile("index.html", { root: __dirname });
 });
 
-server.on("error", (error)=> {
-    console.log(`Error durante la ejecucion del servidor, ${error}`);
+io.on("connection", (socket) => {
+  console.log("Usuario conectado");
+  socket.emit("mi mensaje", "Este es mi mensaje desde el servidor");
+  socket.on("notificacion", (data) => {
+    console.log(data);
+  });
 });
+
+httpServer.listen(3000, () => console.log("SERVER ON"));
+
+
