@@ -2,7 +2,7 @@
   "name": "documentos",
   "version": "1.0.0",
   "description": "backend Coder",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "npm init",
     "start": "node src/server.js"

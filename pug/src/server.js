@@ -1,20 +1,29 @@
 const express = require("express");
+const app = express();
 const Container = require("./container");
-const Form = require("./views/main.pug")
-
+const PORT = 8080;
 
 const contenedor = new Container("src/productos.json");
-
-const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use('/static', express.static(__dirname + '/public'));
 
 app.set("view engine", "pug");
 app.set("views", "./src/views");
 
+app.get('/urlparam', (req, res) => {
+  res.send(req.query);
+});
+
+app.post('urljson', (req, res) =>  {
+  res.send(req.body);
+});
+
 app.get("/", (req, res) => {
-  res.render("hello.pug", {main: Form});
+  res.render("index", { title: "PUGJS", mensaje: "Pug JS Works!!!" });
+});
+app.get("/productos", (req, res) => {
+  res.render("productos");
 });
 
 app.post("/productos", async (req, res) => {
@@ -23,9 +32,9 @@ app.post("/productos", async (req, res) => {
   res.send(newObj);
 });
 
-app.get("/productos", async (_req, res) => {
+app.get("/index.pug", async (_req, res) => {
   const productos = await contenedor.getAll();
-  res.render("productos", {
+  res.render("index", {
     productos: productos,
     hayProductos: productos.length > 0,
   });
@@ -42,7 +51,6 @@ app.get("/:id", async (req, res) => {
   }
 });
 
-const PORT = 8080;
 const server = app.listen(PORT, () => {
   console.log(`Servidor http escuchando en el puerto ${server.address().port}`);
 });

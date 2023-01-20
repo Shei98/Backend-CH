@@ -1,0 +1,24 @@
+html
+    head 
+        title=title
+    body
+        h1#h1(style="color:blue")=mensaje
+
+div
+    h1= "Vista De Productos"
+
+    table 
+        tr
+            th=Nombre
+            th=Precio
+            th=Foto
+
+        if hayProductos
+            each producto in productos
+                tr
+                    td=producto.title
+                    td=producto.price
+                    td 
+                        img(src=producto.thumbnail width="100px")/
+        
+    a(class='button' href='//index.html') Cargar un nuevo producto
